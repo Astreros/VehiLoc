@@ -15,6 +15,10 @@ class CarController extends AbstractController
     {
         $car = $carRepository->find($id);
 
+        if (!$car) {
+            return $this->redirectToRoute('home.show');
+        }
+
         return $this->render('car/index.html.twig', [
             'car' => $car,
         ]);
