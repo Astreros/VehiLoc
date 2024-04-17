@@ -105,7 +105,7 @@ class Car
         return $this->isManualGearbox;
     }
 
-    public function setManualGearbox(bool $isManualGearbox): static
+    public function setIsManualGearbox(bool $isManualGearbox): static
     {
         $this->isManualGearbox = $isManualGearbox;
 
