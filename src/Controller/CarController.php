@@ -13,11 +13,16 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CarController extends AbstractController
 {
+
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
+
     /**
      * Ajouter un véhicule
      */
     #[Route('/voiture/creer', name: 'car.create')]
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request): Response
     {
         $car = new Car();
         $form = $this->createForm(CarType::class, $car);
@@ -26,8 +31,8 @@ class CarController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $car->setCreatedAt(new \DateTimeImmutable());
-            $entityManager->persist($car);
-            $entityManager->flush();
+            $this->entityManager->persist($car);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('home.show');
         }
@@ -66,8 +71,8 @@ class CarController extends AbstractController
             return $this->redirectToRoute('home.show');
         }
 
-        $entityManager->remove($car);
-        $entityManager->flush();
+        $this->entityManager->remove($car);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('home.show');
     }
